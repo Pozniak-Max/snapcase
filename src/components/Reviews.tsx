@@ -90,7 +90,7 @@ function Review({ imgSrc, className, ...props }: ReviewProps) {
 
   const animationDelay =
     POSSIBLE_ANIMATION_DELAYS[
-    Math.floor(Math.random() * POSSIBLE_ANIMATION_DELAYS.length)
+      Math.floor(Math.random() * POSSIBLE_ANIMATION_DELAYS.length)
     ]
 
   return (

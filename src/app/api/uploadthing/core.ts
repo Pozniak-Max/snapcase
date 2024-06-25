@@ -1,12 +1,12 @@
-import { db } from "@/app/db";
-import { createUploadthing, type FileRouter } from "uploadthing/next";
-import { z } from "zod";
-import sharp from "sharp"
+import { createUploadthing, type FileRouter } from 'uploadthing/next'
+import { z } from 'zod'
+import sharp from 'sharp'
+import { db } from '@/db'
 
-const f = createUploadthing();
+const f = createUploadthing()
 
 export const ourFileRouter = {
-  imageUploader: f({ image: { maxFileSize: "4MB" } })
+  imageUploader: f({ image: { maxFileSize: '4MB' } })
     .input(z.object({ configId: z.string().optional() }))
     .middleware(async ({ input }) => {
       return { input }
@@ -17,8 +17,8 @@ export const ourFileRouter = {
       const res = await fetch(file.url)
       const buffer = await res.arrayBuffer()
 
-      const imgMetaData = await sharp(buffer).metadata()
-      const { width, height } = imgMetaData
+      const imgMetadata = await sharp(buffer).metadata()
+      const { width, height } = imgMetadata
 
       if (!configId) {
         const configuration = await db.configuration.create({
@@ -28,6 +28,7 @@ export const ourFileRouter = {
             width: width || 500,
           },
         })
+
         return { configId: configuration.id }
       } else {
         const updatedConfiguration = await db.configuration.update({
@@ -35,17 +36,13 @@ export const ourFileRouter = {
             id: configId,
           },
           data: {
-            croppedImageUrl: file.url
-          }
+            croppedImageUrl: file.url,
+          },
         })
 
         return { configId: updatedConfiguration.id }
       }
-
     }),
-} satisfies FileRouter;
+} satisfies FileRouter
 
-export type OurFileRouter = typeof ourFileRouter;
-
-
-
+export type OurFileRouter = typeof ourFileRouter

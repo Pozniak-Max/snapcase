@@ -1,11 +1,10 @@
-"use server"
+'use server'
 
-import { db } from "@/app/db"
-import { BASE_PRICE, PRODUCTS_PRiCES } from "@/config/products"
-import { stripe } from "@/lib/stripe"
-import { getKindeServerSession } from "@kinde-oss/kinde-auth-nextjs/server"
-import { Order } from "@prisma/client"
-import { url } from "inspector"
+import { BASE_PRICE, PRODUCT_PRICES } from '@/config/products'
+import { db } from '@/db'
+import { stripe } from '@/lib/stripe'
+import { getKindeServerSession } from '@kinde-oss/kinde-auth-nextjs/server'
+import { Order } from '@prisma/client'
 
 export const createCheckoutSession = async ({
   configId,
@@ -30,9 +29,9 @@ export const createCheckoutSession = async ({
   const { finish, material } = configuration
 
   let price = BASE_PRICE
-  if (finish === 'textured') price += PRODUCTS_PRiCES.finish.textured
+  if (finish === 'textured') price += PRODUCT_PRICES.finish.textured
   if (material === 'polycarbonate')
-    price += PRODUCTS_PRiCES.material.polycarbonate
+    price += PRODUCT_PRICES.material.polycarbonate
 
   let order: Order | undefined = undefined
 

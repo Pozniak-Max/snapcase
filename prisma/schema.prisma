@@ -8,7 +8,7 @@ datasource db {
 }
 
 enum OrderStatus {
-  fullfilled
+  fulfilled
   shipped
   awaiting_shipment
 }
@@ -43,8 +43,8 @@ model Configuration {
   width           Int
   height          Int
   imageUrl        String
-  model           PhoneModel?
   color           CaseColor?
+  model           PhoneModel?
   material        CaseMaterial?
   finish          CaseFinish?
   croppedImageUrl String?
@@ -67,12 +67,12 @@ model Order {
   user            User          @relation(fields: [userId], references: [id])
   userId          String
   amount          Float
-  ispaid          Boolean       @default(false)
+  isPaid          Boolean       @default(false)
   status          OrderStatus   @default(awaiting_shipment)
 
   shippingAddress   ShippingAddress? @relation(fields: [shippingAddressId], references: [id])
   shippingAddressId String?
-  BillingAddress    BillingAddress?  @relation(fields: [billingAddressId], references: [id])
+  billingAddress    BillingAddress?  @relation(fields: [billingAddressId], references: [id])
   billingAddressId  String?
 
   createdAt DateTime @default(now())
@@ -87,7 +87,7 @@ model ShippingAddress {
   postalCode  String
   country     String
   state       String?
-  phoneNumber String
+  phoneNumber String?
   orders      Order[]
 }
 
@@ -99,6 +99,6 @@ model BillingAddress {
   postalCode  String
   country     String
   state       String?
-  phoneNumber String
+  phoneNumber String?
   orders      Order[]
 }
